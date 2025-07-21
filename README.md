@@ -1,7 +1,24 @@
 emotion-detection
 ==============================
 
-emotion detection project
+
+DVC commands
+
+```bash
+dvc stage add -n data_ingestion -d src/data/data_ingestion.py -o data/raw/train.csv -o data/raw/test.csv python src/data.data_ingestion.py
+```
+```bash
+dvc stage add -n data_preprocessing -d src/data/data_preprocessing.py -d data/raw/train.csv -d data/raw/test.csv -o data/processed/train.csv -o data/processed/test.csv python src/data/data_preprocessing.py
+```
+```bash
+dvc stage add -n feature_engineering -d src/features/features.py -d data/processed/train.csv -d data/processed/test.csv -o data/interim/train_bow.csv -o data/interim/test_bow.csv python src/features/features.py
+```
+```bash
+dvc stage add -n model_training -d src/modelling/modelling.py -d data/interim/train_bow.csv -o models/random_forest_model.pkl python src/modelling/modelling.py
+```
+```bash
+dvc stage add -n model_evaluation -d src/modelling/model_evaluation.py -d models/random_forest_model.pkl -d data/interim/test_bow.csv -o reports/metrics.json python src/modelling/model_evaluation.py
+```
 
 Project Organization
 ------------
