@@ -1,5 +1,44 @@
 emotion-detection
 ==============================
+### Installation
+
+1. **Install uv package manager** (if you haven't already)
+   ```bash
+   # On macOS and Linux
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+   
+   # On Windows
+   powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+   
+   # Or via pip
+   pip install uv
+   ```
+
+2. **Clone the repository**
+   ```bash
+   git clone https://github.com/serpentile-c137/emotion-detection.git
+   cd emotion-detection
+   ```
+
+3. **Create virtual environment and install dependencies**
+   ```bash
+   # Create and activate virtual environment with Python 3.8+
+   uv venv
+   
+   # Activate virtual environment
+   # On macOS/Linux:
+   source .venv/bin/activate
+   # On Windows:
+   .venv\Scripts\activate
+   
+   # Install dependencies
+   uv pip install -r requirements.txt
+   # Or if you alredy have pyptoject.toml
+   uv sync
+
+   # If you want to manually install
+   uv add numpy pandas scikit-learn nltk dvc
+   ```
 
 
 DVC commands
