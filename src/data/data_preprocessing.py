@@ -9,11 +9,17 @@ from pandas import DataFrame
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 
-# Configure logging
+# Configure logging to both console and file
+LOG_DIR = "logs"
+os.makedirs(LOG_DIR, exist_ok=True)
+LOG_FILE = os.path.join(LOG_DIR, "data_preprocessing.log")
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[logging.StreamHandler()]
+    handlers=[
+        logging.StreamHandler(),
+        logging.FileHandler(LOG_FILE, mode='a')
+    ]
 )
 
 def download_nltk_resources() -> None:

@@ -5,8 +5,8 @@ stages:
     deps:
     - path: src/data/data_ingestion.py
       hash: md5
-      md5: 6a587135bc680cb1b43020292322c4f2
-      size: 3421
+      md5: 7cc08acc111e01b72e5ead5955080482
+      size: 3617
     outs:
     - path: data/raw/test.csv
       hash: md5
@@ -29,8 +29,8 @@ stages:
       size: 572236
     - path: src/data/data_preprocessing.py
       hash: md5
-      md5: a841ee6ab7268f7f362ccad60edc53fe
-      size: 4923
+      md5: 00597f8ea7eb76ce302283d7632a60e7
+      size: 5123
     outs:
     - path: data/processed/test.csv
       hash: md5
@@ -53,8 +53,8 @@ stages:
       size: 388956
     - path: src/features/features.py
       hash: md5
-      md5: 933e297434dc84dbba4a29804df8cfbe
-      size: 3066
+      md5: da01da9714c428804cad6b34ffad9cfb
+      size: 3256
     outs:
     - path: data/interim/test_bow.csv
       hash: md5
@@ -73,8 +73,8 @@ stages:
       size: 2193016
     - path: src/modelling/modelling.py
       hash: md5
-      md5: ba69f704661b0d87872f5f3bceb27a80
-      size: 2831
+      md5: 19398e2765f4cdcf9fb7dc740b1770d5
+      size: 3022
     outs:
     - path: models/random_forest_model.pkl
       hash: md5
@@ -93,8 +93,8 @@ stages:
       size: 1024593
     - path: src/modelling/model_evaluation.py
       hash: md5
-      md5: 57149c275e7261d3558c0983fd33f9c9
-      size: 2791
+      md5: 55f747a275acbb69173fa6febf9b32d1
+      size: 2989
     outs:
     - path: reports/metrics.json
       hash: md5
