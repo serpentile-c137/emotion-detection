@@ -1,46 +1,88 @@
-import pandas as pd
-import numpy as np  
 import os
-
+import logging
+from typing import Tuple
+import pandas as pd
+import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 import yaml
 
-with open("params.yaml", "r") as file:
-    params = yaml.safe_load(file)
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[logging.StreamHandler()]
+)
 
-max_features = params["feature_engg"]["max_features"]
+def load_params(params_path: str = "params.yaml") -> dict:
+    try:
+        with open(params_path, "r") as file:
+            params = yaml.safe_load(file)
+        logging.info(f"Loaded parameters from {params_path}")
+        return params
+    except Exception as e:
+        logging.error(f"Failed to load parameters from {params_path}: {e}")
+        raise
 
+def load_data(file_path: str) -> pd.DataFrame:
+    try:
+        df = pd.read_csv(file_path).dropna(subset=['content'])
+        logging.info(f"Loaded data from {file_path} with shape {df.shape}")
+        return df
+    except Exception as e:
+        logging.error(f"Failed to load data from {file_path}: {e}")
+        raise
 
-# Load processed train and test data
-train_data = pd.read_csv("data/processed/train.csv").dropna(subset=['content'])
-test_data = pd.read_csv("data/processed/test.csv").dropna(subset=['content'])
+def extract_features_and_labels(df: pd.DataFrame) -> Tuple[np.ndarray, np.ndarray]:
+    try:
+        X = df['content'].values
+        y = df['sentiment'].values
+        return X, y
+    except Exception as e:
+        logging.error(f"Failed to extract features and labels: {e}")
+        raise
 
-# Extract features and labels from train and test data
-X_train = train_data['content'].values
-y_train = train_data['sentiment'].values
+def vectorize_data(X_train: np.ndarray, X_test: np.ndarray, max_features: int) -> Tuple[np.ndarray, np.ndarray, CountVectorizer]:
+    try:
+        vectorizer = CountVectorizer(max_features=max_features)
+        X_train_bow = vectorizer.fit_transform(X_train)
+        X_test_bow = vectorizer.transform(X_test)
+        logging.info(f"Vectorized data with max_features={max_features}")
+        return X_train_bow, X_test_bow, vectorizer
+    except Exception as e:
+        logging.error(f"Vectorization failed: {e}")
+        raise
 
-X_test = test_data['content'].values
-y_test = test_data['sentiment'].values
+def save_features(X: np.ndarray, y: np.ndarray, file_path: str) -> None:
+    try:
+        df = pd.DataFrame(X.toarray())
+        df['label'] = y
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+        df.to_csv(file_path, index=False)
+        logging.info(f"Saved features to {file_path}")
+    except Exception as e:
+        logging.error(f"Failed to save features to {file_path}: {e}")
+        raise
 
-# Apply Bag of Words (CountVectorizer)
-# vectorizer = CountVectorizer()
-vectorizer = CountVectorizer(max_features=max_features)
+def main() -> None:
+    try:
+        params = load_params("params.yaml")
+        max_features = params["feature_engg"]["max_features"]
 
+        train_data = load_data("data/processed/train.csv")
+        test_data = load_data("data/processed/test.csv")
 
-# Fit the vectorizer on the training data and transform it to feature vectors
-X_train_bow = vectorizer.fit_transform(X_train)
+        X_train, y_train = extract_features_and_labels(train_data)
+        X_test, y_test = extract_features_and_labels(test_data)
 
-# Transform the test data using the same vectorizer (do not fit again)
-X_test_bow = vectorizer.transform(X_test)
+        X_train_bow, X_test_bow, _ = vectorize_data(X_train, X_test, max_features)
 
-# Convert the feature vectors to DataFrames for easier handling
-train_df = pd.DataFrame(X_train_bow.toarray())
-train_df['label'] = y_train
+        save_features(X_train_bow, y_train, "data/interim/train_bow.csv")
+        save_features(X_test_bow, y_test, "data/interim/test_bow.csv")
 
-test_df = pd.DataFrame(X_test_bow.toarray())
-test_df['label'] = y_test   
+        logging.info("Feature engineering completed successfully.")
+    except Exception as e:
+        logging.critical(f"Feature engineering failed: {e}")
+        raise
 
-# Save the processed feature data to CSV files
-os.makedirs("data/interim", exist_ok=True)  # Ensure the directory exists
-train_df.to_csv("data/interim/train_bow.csv", index=False)
-test_df.to_csv("data/interim/test_bow.csv", index=False)
+if __name__ == "__main__":
+    main()
