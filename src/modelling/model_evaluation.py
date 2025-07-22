@@ -1,5 +1,6 @@
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import precision_score, recall_score, roc_auc_score
+from sklearn.metrics import classification_report
 
 import pandas as pd
 import pickle   
@@ -19,5 +20,10 @@ metrics_dict = {
     "roc_auc": roc_auc_score(y_test, y_pred)
 }
 
+classification_report_dict = classification_report(y_test, y_pred, output_dict=True)
+
 with open("reports/metrics.json", "w") as f:
     json.dump(metrics_dict, f, indent=4)
+
+with open("reports/classification_report.json", "w") as f:
+    json.dump(classification_report_dict, f, indent=4)
