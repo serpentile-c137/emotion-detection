@@ -71,8 +71,8 @@ def save_model(model: RandomForestClassifier, file_path: str) -> None:
 def main() -> None:
     try:
         params = load_params("params.yaml")
-        n_estimators = params["model_building"]["n_estimators"]
-        max_depth = params["model_building"]["max_depth"]
+        n_estimators = params["model_training"]["n_estimators"]
+        max_depth = params["model_training"]["max_depth"]
 
         train_data = load_train_data("data/interim/train_bow.csv")
         X_train, y_train = get_features_and_labels(train_data)

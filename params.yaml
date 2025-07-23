@@ -4,6 +4,6 @@ data_ingestion:
 feature_engg:
   max_features: 150
 
-model_building:
-  n_estimators: 80
+model_training:
+  n_estimators: 120
   max_depth: 10

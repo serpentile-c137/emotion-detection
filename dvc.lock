@@ -7,6 +7,9 @@ stages:
       hash: md5
       md5: 7cc08acc111e01b72e5ead5955080482
       size: 3617
+    params:
+      params.yaml:
+        data_ingestion.test_size: 0.3
     outs:
     - path: data/raw/test.csv
       hash: md5
@@ -55,6 +58,9 @@ stages:
       hash: md5
       md5: da01da9714c428804cad6b34ffad9cfb
       size: 3256
+    params:
+      params.yaml:
+        feature_engg.max_features: 150
     outs:
     - path: data/interim/test_bow.csv
       hash: md5
@@ -73,13 +79,17 @@ stages:
       size: 2193016
     - path: src/modelling/modelling.py
       hash: md5
-      md5: 19398e2765f4cdcf9fb7dc740b1770d5
+      md5: 378d1e39ed47235c2c9311431edf4687
       size: 3022
+    params:
+      params.yaml:
+        model_training.max_depth: 10
+        model_training.n_estimators: 120
     outs:
     - path: models/random_forest_model.pkl
       hash: md5
-      md5: a3341174927cad9992677f0d4a5d150a
-      size: 1024593
+      md5: b79fe3879797aaac12a4be73452433c0
+      size: 1528376
   model_evaluation:
     cmd: python src/modelling/model_evaluation.py
     deps:
@@ -89,8 +99,8 @@ stages:
       size: 940320
     - path: models/random_forest_model.pkl
       hash: md5
-      md5: a3341174927cad9992677f0d4a5d150a
-      size: 1024593
+      md5: b79fe3879797aaac12a4be73452433c0
+      size: 1528376
     - path: src/modelling/model_evaluation.py
       hash: md5
       md5: 55f747a275acbb69173fa6febf9b32d1
@@ -98,5 +108,5 @@ stages:
     outs:
     - path: reports/metrics.json
       hash: md5
-      md5: 05adefee5c910fb89f81e8dbbf7cec69
+      md5: b3d6babcc89be6572c737b9dd183f071
       size: 143
