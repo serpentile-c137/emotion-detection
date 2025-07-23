@@ -3,7 +3,8 @@ import logging
 from typing import Tuple
 import pandas as pd
 import numpy as np
-from sklearn.feature_extraction.text import CountVectorizer
+# from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 import yaml
 
 # Configure logging to both console and file
@@ -47,13 +48,13 @@ def extract_features_and_labels(df: pd.DataFrame) -> Tuple[np.ndarray, np.ndarra
         logging.error(f"Failed to extract features and labels: {e}")
         raise
 
-def vectorize_data(X_train: np.ndarray, X_test: np.ndarray, max_features: int) -> Tuple[np.ndarray, np.ndarray, CountVectorizer]:
+def vectorize_data(X_train: np.ndarray, X_test: np.ndarray, max_features: int) -> Tuple[np.ndarray, np.ndarray, TfidfVectorizer]:
     try:
-        vectorizer = CountVectorizer(max_features=max_features)
-        X_train_bow = vectorizer.fit_transform(X_train)
-        X_test_bow = vectorizer.transform(X_test)
+        vectorizer = TfidfVectorizer(max_features=max_features)
+        X_train_tfidf = vectorizer.fit_transform(X_train)
+        X_test_tfidf = vectorizer.transform(X_test)
         logging.info(f"Vectorized data with max_features={max_features}")
-        return X_train_bow, X_test_bow, vectorizer
+        return X_train_tfidf, X_test_tfidf, vectorizer
     except Exception as e:
         logging.error(f"Vectorization failed: {e}")
         raise

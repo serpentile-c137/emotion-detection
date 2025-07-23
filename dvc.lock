@@ -56,27 +56,27 @@ stages:
       size: 388956
     - path: src/features/features.py
       hash: md5
-      md5: da01da9714c428804cad6b34ffad9cfb
-      size: 3256
+      md5: e47f137d01e60e747053b1600dd02f61
+      size: 3326
     params:
       params.yaml:
         feature_engg.max_features: 150
     outs:
     - path: data/interim/test_bow.csv
       hash: md5
-      md5: 11547515a029dfa59e437f37e8a8152a
-      size: 940320
+      md5: 70be9b5a15610acdebf66456227a24fc
+      size: 2004209
     - path: data/interim/train_bow.csv
       hash: md5
-      md5: 82c8617358a8d767b02fd95adcebf746
-      size: 2193016
+      md5: 6d410042422aee733bfbc93dfb2390f2
+      size: 4679230
   model_training:
     cmd: python src/modelling/modelling.py
     deps:
     - path: data/interim/train_bow.csv
       hash: md5
-      md5: 82c8617358a8d767b02fd95adcebf746
-      size: 2193016
+      md5: 6d410042422aee733bfbc93dfb2390f2
+      size: 4679230
     - path: src/modelling/modelling.py
       hash: md5
       md5: 378d1e39ed47235c2c9311431edf4687
@@ -88,19 +88,19 @@ stages:
     outs:
     - path: models/random_forest_model.pkl
       hash: md5
-      md5: b79fe3879797aaac12a4be73452433c0
-      size: 1528376
+      md5: 2901652c263ac2bd4d92d47117c96d42
+      size: 1287389
   model_evaluation:
     cmd: python src/modelling/model_evaluation.py
     deps:
     - path: data/interim/test_bow.csv
       hash: md5
-      md5: 11547515a029dfa59e437f37e8a8152a
-      size: 940320
+      md5: 70be9b5a15610acdebf66456227a24fc
+      size: 2004209
     - path: models/random_forest_model.pkl
       hash: md5
-      md5: b79fe3879797aaac12a4be73452433c0
-      size: 1528376
+      md5: 2901652c263ac2bd4d92d47117c96d42
+      size: 1287389
     - path: src/modelling/model_evaluation.py
       hash: md5
       md5: 55f747a275acbb69173fa6febf9b32d1
@@ -108,5 +108,5 @@ stages:
     outs:
     - path: reports/metrics.json
       hash: md5
-      md5: b3d6babcc89be6572c737b9dd183f071
-      size: 143
+      md5: 8310d4aff20de55cf4315a4e22330f51
+      size: 144
